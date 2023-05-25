@@ -4722,6 +4722,9 @@ tc_riscv_regname_to_dw2regnum (char *regname)
   if ((reg = reg_lookup_internal (regname, RCLASS_VECR)) >= 0)
     return reg + 96;
 
+  if ((reg = reg_lookup_internal (regname, RCLASS_XBGAS)) >= 0)
+    return reg + 128;
+
   /* CSRs are numbered 4096 -> 8191.  */
   if ((reg = reg_lookup_internal (regname, RCLASS_CSR)) >= 0)
     return reg + 4096;
