@@ -928,8 +928,9 @@ enum reg_class
   RCLASS_FPR,
   RCLASS_VECR,
   RCLASS_VECM,
-  RCLASS_MAX,
   RCLASS_XBGAS,
+  RCLASS_MAX,
+  
   RCLASS_CSR
 };
 
