@@ -942,6 +942,7 @@ enum reg_class
   RCLASS_FPR,
   RCLASS_VECR,
   RCLASS_VECM,
+	RCLASS_XBGAS,
   RCLASS_MAX,
 
   RCLASS_CSR
@@ -1553,18 +1554,22 @@ validate_riscv_insn (const struct riscv_opcode *opc, int length)
 	case 'c': break; /* Macro operand, must be symbol or constant.  */
 	case 'I': break; /* Macro operand, must be constant.  */
 	case 'D': /* RD, floating point.  */
+	case 'G': /* EXTD/EXT3, xBGAS extended register. */
 	case 'd': USE_BITS (OP_MASK_RD, OP_SH_RD); break;
 	case 'y': USE_BITS (OP_MASK_BS,	OP_SH_BS); break;
 	case 'Y': USE_BITS (OP_MASK_RNUM, OP_SH_RNUM); break;
 	case 'Z': /* RS1, CSR number.  */
 	case 'S': /* RS1, floating point.  */
+	case 'H': /* EXT1, xBGAS extended register. */
 	case 's': USE_BITS (OP_MASK_RS1, OP_SH_RS1); break;
 	case 'U': /* RS1 and RS2 are the same, floating point.  */
 	  USE_BITS (OP_MASK_RS1, OP_SH_RS1);
 	  /* Fall through.  */
 	case 'T': /* RS2, floating point.  */
+	case 'J': /* EXT2, xBGAS extended register. */
 	case 't': USE_BITS (OP_MASK_RS2, OP_SH_RS2); break;
 	case 'R': /* RS3, floating point.  */
+	case 'g': /* RS3, xBGAS bulk transfer*/
 	case 'r': USE_BITS (OP_MASK_RS3, OP_SH_RS3); break;
 	case 'm': USE_BITS (OP_MASK_RM, OP_SH_RM); break;
 	case 'E': USE_BITS (OP_MASK_CSR, OP_SH_CSR); break;
@@ -1850,6 +1855,7 @@ md_begin (void)
   hash_reg_names (RCLASS_FPR, riscv_fpr_names_abi, NFPR);
   hash_reg_names (RCLASS_VECR, riscv_vecr_names_numeric, NVECR);
   hash_reg_names (RCLASS_VECM, riscv_vecm_names_numeric, NVECM);
+	hash_reg_names (RCLASS_XBGAS, riscv_xbgas_names_numeric, NGPR);
   /* Add "fp" as an alias for "s0".  */
   hash_reg_name (RCLASS_GPR, "fp", 8);
 
@@ -3465,10 +3471,38 @@ riscv_ip (char *str, struct riscv_cl_insn *ip, expressionS *imm_expr,
 		}
 	      break;
 
+			case 'G': /* EXTD xBGAS destination register */
+      case 'H': /* EXT1 xBGAS register */
+      case 'J': /* EXT2 xBGAS register */
+        if( reg_lookup (&asarg, RCLASS_XBGAS, &regno))
+		{
+			char c = *oparg;
+			if (*asarg == ' ')
+				++asarg;
+
+			/* Now that we have assembled one operand, we use the args
+					string to figure out where it goes in the instruction.  */
+			switch (c)
+			{
+				case 'G':
+					INSERT_OPERAND (RD, *ip, regno);
+					break;
+				case 'H':
+					INSERT_OPERAND (RS1, *ip, regno);
+					break;
+				case 'J':
+					INSERT_OPERAND (RS2, *ip, regno);
+					break;
+			}
+			continue;
+		}
+        break;
+
 	    case 'd': /* Destination register.  */
 	    case 's': /* Source register.  */
 	    case 't': /* Target register.  */
 	    case 'r': /* RS3 */
+			case 'g': /* RS3, xBGAS bulk transfer */
 	      if (reg_lookup (&asarg, RCLASS_GPR, &regno))
 		{
 		  char c = *oparg;
@@ -3489,6 +3523,7 @@ riscv_ip (char *str, struct riscv_cl_insn *ip, expressionS *imm_expr,
 		      INSERT_OPERAND (RS2, *ip, regno);
 		      break;
 		    case 'r':
+				case 'g':
 		      INSERT_OPERAND (RS3, *ip, regno);
 		      break;
 		    }
@@ -5257,6 +5292,9 @@ tc_riscv_regname_to_dw2regnum (char *regname)
 
   if ((reg = reg_lookup_internal (regname, RCLASS_VECR)) >= 0)
     return reg + 96;
+
+	if ((reg = reg_lookup_internal (regname, RCLASS_XBGAS)) >= 0)
+    return reg + 128;
 
   /* CSRs are numbered 4096 -> 8191.  */
   if ((reg = reg_lookup_internal (regname, RCLASS_CSR)) >= 0)

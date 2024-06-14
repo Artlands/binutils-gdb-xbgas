@@ -2732,6 +2732,8 @@ riscv_multi_subset_supports (riscv_parse_subset_t *rps,
       return riscv_subset_supports (rps, "xventanacondops");
     case INSN_CLASS_XSFVCP:
       return riscv_subset_supports (rps, "xsfvcp");
+    case INSN_CLASS_XBGAS:
+      return riscv_subset_supports (rps, "xbgas");
     default:
       rps->error_handler
         (_("internal: unreachable INSN_CLASS_*"));
@@ -2998,6 +3000,8 @@ riscv_multi_subset_supports_ext (riscv_parse_subset_t *rps,
       return "xtheadvector";
     case INSN_CLASS_XTHEADZVAMO:
       return "xtheadzvamo";
+    case INSN_CLASS_XBGAS:
+      return "xbgas";
     default:
       rps->error_handler
         (_("internal: unreachable INSN_CLASS_*"));
