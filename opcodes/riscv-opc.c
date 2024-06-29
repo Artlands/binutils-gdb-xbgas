@@ -58,6 +58,14 @@ const char riscv_fpr_names_abi[NFPR][NRC] =
   "fs8",  "fs9",  "fs10", "fs11", "ft8",  "ft9",  "ft10", "ft11"
 };
 
+const char riscv_xbgas_names_numeric[NGPR][NRC] =
+{
+  "e0",   "e1",   "e2",   "e3",   "e4",   "e5",   "e6",   "e7",   "e8",
+  "e9",   "e10",  "e11",  "e12",  "e13",  "e14",  "e15",  "e16",  "e17",
+  "e18",  "e19",  "e20",  "e21",  "e22",  "e23",  "e24",  "e25",  "e26",
+  "e27",  "e28",  "e29",  "e30",  "e31"
+};
+
 /* Rounding modes.  */
 const char * const riscv_rm[8] =
 {
@@ -2946,6 +2954,75 @@ const struct riscv_opcode riscv_opcodes[] =
 {"sf.vc.fvw",   0, INSN_CLASS_XSFVCP, "XsO1,Vd,Vt,S",  MATCH_SF_VC_FVW, MASK_SF_VC_FVW, match_opcode, 0 },
 {"sf.vc.v.fvw", 0, INSN_CLASS_XSFVCP, "XsO1,Vd,Vt,S",  MATCH_SF_VC_V_FVW, MASK_SF_VC_V_FVW, match_opcode, 0 },
 
+/* xBGAS instructions */
+/* name, xlen, isa, operands, match, mask, match_func, pinfo.  */
+{"eld",       64, INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELD,  MASK_ELD,  match_opcode, 0 },
+{"elw",       0,  INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELW,  MASK_ELW,  match_opcode, 0 },
+{"elh",       0,  INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELH,  MASK_ELH,  match_opcode, 0 },
+{"elhu",      0,  INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELHU, MASK_ELHU, match_opcode, 0 },
+{"elb",       0,  INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELB,  MASK_ELB,  match_opcode, 0 },
+{"elbu",      0,  INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELBU, MASK_ELBU, match_opcode, 0 },
+{"ele",       64, INSN_CLASS_XBGAS, "G,o(s)",  MATCH_ELE,  MASK_ELE,  match_opcode, 0 },
+
+{"esd",       64, INSN_CLASS_XBGAS, "t,q(s)",  MATCH_ESD,  MASK_ESD,  match_opcode, 0 },
+{"esw",       0,  INSN_CLASS_XBGAS, "t,q(s)",  MATCH_ESW,  MASK_ESW,  match_opcode, 0 },
+{"esh",       0,  INSN_CLASS_XBGAS, "t,q(s)",  MATCH_ESH,  MASK_ESH,  match_opcode, 0 },
+{"esb",       0,  INSN_CLASS_XBGAS, "t,q(s)",  MATCH_ESB,  MASK_ESB,  match_opcode, 0 },
+{"ese",       64, INSN_CLASS_XBGAS, "J,q(s)",  MATCH_ESE,  MASK_ESE,  match_opcode, 0 },
+
+{"erld",      64, INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLD, MASK_ERLD, match_opcode, 0 }, 
+{"erlw",      0,  INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLW, MASK_ERLW, match_opcode, 0 }, 
+{"erlh",      0,  INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLH, MASK_ERLH, match_opcode, 0 }, 
+{"erlhu",     0,  INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLHU,MASK_ERLHU,match_opcode, 0 }, 
+{"erlb",      0,  INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLB, MASK_ERLB, match_opcode, 0 }, 
+{"erlbu",     0,  INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLBU,MASK_ERLBU,match_opcode, 0 }, 
+{"erle",      64, INSN_CLASS_XBGAS, "G,s,J",   MATCH_ERLE, MASK_ERLE, match_opcode, 0 }, 
+
+{"ersd",      64, INSN_CLASS_XBGAS, "s,t,G",   MATCH_ERSD, MASK_ERSD, match_opcode, 0 }, 
+{"ersw",      0,  INSN_CLASS_XBGAS, "s,t,G",   MATCH_ERSW, MASK_ERSW, match_opcode, 0 }, 
+{"ersh",      0,  INSN_CLASS_XBGAS, "s,t,G",   MATCH_ERSH, MASK_ERSH, match_opcode, 0 }, 
+{"ersb",      0,  INSN_CLASS_XBGAS, "s,t,G",   MATCH_ERSB, MASK_ERSB, match_opcode, 0 }, 
+{"erse",      64, INSN_CLASS_XBGAS, "H,t,G",   MATCH_ERSE, MASK_ERSE, match_opcode, 0 },
+
+{"eaddi",     0,  INSN_CLASS_XBGAS, "d,H,o",   MATCH_EADDI, MASK_EADDI, match_opcode, 0 },
+{"eaddie",    0,  INSN_CLASS_XBGAS, "G,s,o",   MATCH_EADDIE,MASK_EADDIE,match_opcode, 0 },
+{"eaddix",    0,  INSN_CLASS_XBGAS, "G,H,o",   MATCH_EADDIX,MASK_EADDIX,match_opcode, 0 },
+
+{"ebld",      64, INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLD,  MASK_EBLD,  match_opcode, 0 }, 
+{"eblw",      0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLW,  MASK_EBLW,  match_opcode, 0 }, 
+{"eblh",      0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLH,  MASK_EBLH,  match_opcode, 0 }, 
+{"eblhu",     0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLHU, MASK_EBLHU, match_opcode, 0 }, 
+{"eblb",      0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLB,  MASK_EBLB,  match_opcode, 0 }, 
+{"eblbu",     0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLBU, MASK_EBLBU, match_opcode, 0 }, 
+
+{"ebsd",      64, INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBSD, MASK_EBSD, match_opcode, 0 }, 
+{"ebsw",      0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBSW, MASK_EBSW, match_opcode, 0 }, 
+{"ebsh",      0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBSH, MASK_EBSH, match_opcode, 0 }, 
+{"ebsb",      0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBSB, MASK_EBSB, match_opcode, 0 }, 
+
+{"elr.w",      0,  INSN_CLASS_XBGAS, "d,s",   MATCH_ELR_W, MASK_ELR_W, match_opcode, 0},
+{"esc.w",      0,  INSN_CLASS_XBGAS, "d,t,s", MATCH_ESC_W, MASK_ESC_W, match_opcode, 0},
+{"eamoswap.w", 0,  INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOSWAP_W, MASK_EAMOSWAP_W, match_opcode, 0},
+{"eamoadd.w",  0,  INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOADD_W, MASK_EAMOADD_W, match_opcode, 0},
+{"eamoxor.w",  0,  INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOXOR_W, MASK_EAMOXOR_W, match_opcode, 0},
+{"eamoand.w",  0,  INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOADD_W, MASK_EAMOADD_W, match_opcode, 0},
+{"eamoor.w",   0,  INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOOR_W, MASK_EAMOOR_W, match_opcode, 0},
+{"eamomin.w",  0,  INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOMIN_W, MASK_EAMOMIN_W, match_opcode, 0},
+{"eamomax.w",  0,  INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOMAX_W, MASK_EAMOMAX_W, match_opcode, 0},
+{"eamominu.w", 0,  INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOMINU_W, MASK_EAMOMINU_W, match_opcode, 0},
+{"eamomaxu.w", 0,  INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOMAXU_W, MASK_EAMOMAXU_W, match_opcode, 0},
+
+{"elr.d",      64, INSN_CLASS_XBGAS, "d,s",   MATCH_ELR_D, MASK_ELR_D, match_opcode, 0},
+{"esc.d",      64, INSN_CLASS_XBGAS, "d,t,s", MATCH_ESC_D, MASK_ESC_D, match_opcode, 0},
+{"eamoswap.d", 64, INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOSWAP_D, MASK_EAMOSWAP_D, match_opcode, 0},
+{"eamoadd.d",  64, INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOADD_D, MASK_EAMOADD_D, match_opcode, 0},
+{"eamoxor.d",  64, INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOXOR_D, MASK_EAMOXOR_D, match_opcode, 0},
+{"eamoand.d",  64, INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOADD_D, MASK_EAMOADD_D, match_opcode, 0},
+{"eamoor.d",   64, INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOOR_D, MASK_EAMOOR_D, match_opcode, 0},
+{"eamomin.d",  64, INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOMIN_D, MASK_EAMOMIN_D, match_opcode, 0},
+{"eamomax.d",  64, INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOMAX_D, MASK_EAMOMAX_D, match_opcode, 0},
+{"eamominu.d", 64, INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOMINU_D, MASK_EAMOMINU_D, match_opcode, 0},
+{"eamomaxu.d", 64, INSN_CLASS_XBGAS, "d,t,s", MATCH_EAMOMAXU_D, MASK_EAMOMAXU_D, match_opcode, 0},
 /* Terminate the list.  */
 {0, 0, INSN_CLASS_NONE, 0, 0, 0, 0, 0}
 };

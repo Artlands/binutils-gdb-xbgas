@@ -487,6 +487,7 @@ enum riscv_insn_class
   INSN_CLASS_XTHEADZVAMO,
   INSN_CLASS_XVENTANACONDOPS,
   INSN_CLASS_XSFVCP,
+  INSN_CLASS_XBGAS,
 };
 
 /* This structure holds information for a particular instruction.  */
@@ -600,6 +601,7 @@ extern const char * const riscv_rm[8];
 extern const char * const riscv_pred_succ[16];
 extern const char riscv_vecr_names_numeric[NVECR][NRC];
 extern const char riscv_vecm_names_numeric[NVECM][NRC];
+extern const char riscv_xbgas_names_numeric[NGPR][NRC];
 extern const char * const riscv_vsew[8];
 extern const char * const riscv_vlmul[8];
 extern const char * const riscv_vta[2];
