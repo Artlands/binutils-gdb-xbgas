@@ -2816,6 +2816,8 @@ riscv_multi_subset_supports_ext (riscv_parse_subset_t *rps,
       return "xtheadmempair";
     case INSN_CLASS_XTHEADSYNC:
       return "xtheadsync";
+    case INSN_CLASS_XBGAS:
+      return "xbgas";
     default:
       rps->error_handler
         (_("internal: unreachable INSN_CLASS_*"));
