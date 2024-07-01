@@ -2992,11 +2992,13 @@
 #define CSR_VTYPE 0xc21
 #define CSR_VLENB 0xc22
 /* xBGAS extension */
-#define MATCH_EADDI 0x207b
+// #define MATCH_EADDI 0x207b
+#define MATCH_EADDI 0x607b
 #define MASK_EADDI 0x707f
 #define MATCH_EADDIE 0x507b
 #define MASK_EADDIE 0x707f
-#define MATCH_EADDIX 0x407b
+// #define MATCH_EADDIX 0x407b
+#define MATCH_EADDIX 0x7003
 #define MASK_EADDIX 0x707f
 // #define MATCH_EAMOADD_D 0x306b
 // #define MASK_EAMOADD_D 0xf800707f
