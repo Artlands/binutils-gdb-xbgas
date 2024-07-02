@@ -3336,6 +3336,7 @@ riscv_ip (char *str, struct riscv_cl_insn *ip, expressionS *imm_expr,
 		      INSERT_OPERAND (RS2, *ip, regno);
 		      break;
 		    case 'r':
+				case 'g':
 		      INSERT_OPERAND (RS3, *ip, regno);
 		      break;
 		    }
