@@ -1,6 +1,10 @@
 #source: mark-plt-1.s
 #as: --64
+<<<<<<< HEAD
 #ld: -melf_x86_64 -shared -z mark-plt -z ibtplt --hash-style=both
+=======
+#ld: -melf_x86_64 -shared -z mark-plt -z ibtplt --hash-style=both --no-rosegment
+>>>>>>> upstream/binutils-2_43-branch
 #objdump: -dw
 
 #...

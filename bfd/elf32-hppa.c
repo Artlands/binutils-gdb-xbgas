@@ -2042,8 +2042,8 @@ clobber_millicode_symbols (struct elf_link_hash_entry *eh,
 /* Set the sizes of the dynamic sections.  */
 
 static bool
-elf32_hppa_size_dynamic_sections (bfd *output_bfd ATTRIBUTE_UNUSED,
-				  struct bfd_link_info *info)
+elf32_hppa_late_size_sections (bfd *output_bfd ATTRIBUTE_UNUSED,
+			       struct bfd_link_info *info)
 {
   struct elf32_hppa_link_hash_table *htab;
   bfd *dynobj;
@@ -2057,7 +2057,7 @@ elf32_hppa_size_dynamic_sections (bfd *output_bfd ATTRIBUTE_UNUSED,
 
   dynobj = htab->etab.dynobj;
   if (dynobj == NULL)
-    abort ();
+    return true;
 
   if (htab->etab.dynamic_sections_created)
     {
@@ -3432,6 +3432,7 @@ final_link_relocate (asection *input_section,
       break;
     }
 
+<<<<<<< HEAD
   r_format = bfd_hppa_insn2fmt (input_bfd, insn);
   switch (r_format)
     {
@@ -3474,6 +3475,64 @@ final_link_relocate (asection *input_section,
       break;
 
     default:
+=======
+  switch (r_type)
+    {
+    case R_PARISC_DIR32:
+    case R_PARISC_SECREL32:
+    case R_PARISC_SEGBASE:
+    case R_PARISC_SEGREL32:
+    case R_PARISC_PLABEL32:
+      /* These relocations apply to data.  */
+      r_format = howto->bitsize;
+      break;
+
+    default:
+      r_format = bfd_hppa_insn2fmt (input_bfd, insn);
+      switch (r_format)
+	{
+	case 10:
+	case -10:
+	  if (val & 7)
+	    {
+	      _bfd_error_handler
+		/* xgettext:c-format */
+		(_("%pB(%pA+%#" PRIx64 "): displacement %#x for insn %#x "
+		   "is not a multiple of 8 (gp %#x)"),
+		 input_bfd,
+		 input_section,
+		 (uint64_t) offset,
+		 val,
+		 insn,
+		 (unsigned int) elf_gp (input_section->output_section->owner));
+	      bfd_set_error (bfd_error_bad_value);
+	      return bfd_reloc_notsupported;
+	    }
+	  break;
+
+	case -11:
+	case -16:
+	  if (val & 3)
+	    {
+	      _bfd_error_handler
+		/* xgettext:c-format */
+		(_("%pB(%pA+%#" PRIx64 "): displacement %#x for insn %#x "
+		   "is not a multiple of 4 (gp %#x)"),
+		 input_bfd,
+		 input_section,
+		 (uint64_t) offset,
+		 val,
+		 insn,
+		 (unsigned int) elf_gp (input_section->output_section->owner));
+	      bfd_set_error (bfd_error_bad_value);
+	      return bfd_reloc_notsupported;
+	    }
+	  break;
+
+	default:
+	  break;
+        }
+>>>>>>> upstream/binutils-2_43-branch
       break;
     }
   insn = hppa_rebuild_insn (insn, val, r_format);
@@ -4183,8 +4242,6 @@ elf32_hppa_finish_dynamic_symbol (bfd *output_bfd,
   bfd_byte *loc;
 
   htab = hppa_link_hash_table (info);
-  if (htab == NULL)
-    return false;
 
   if (eh->plt.offset != (bfd_vma) -1)
     {
@@ -4496,7 +4553,7 @@ elf32_hppa_elf_get_symbol_type (Elf_Internal_Sym *elf_sym, int type)
 #define elf_backend_hide_symbol		     elf32_hppa_hide_symbol
 #define elf_backend_finish_dynamic_symbol    elf32_hppa_finish_dynamic_symbol
 #define elf_backend_finish_dynamic_sections  elf32_hppa_finish_dynamic_sections
-#define elf_backend_size_dynamic_sections    elf32_hppa_size_dynamic_sections
+#define elf_backend_late_size_sections	     elf32_hppa_late_size_sections
 #define elf_backend_init_index_section	     _bfd_elf_init_1_index_section
 #define elf_backend_gc_mark_hook	     elf32_hppa_gc_mark_hook
 #define elf_backend_grok_prstatus	     elf32_hppa_grok_prstatus
