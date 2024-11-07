@@ -3187,6 +3187,7 @@ const struct riscv_opcode riscv_opcodes[] =
 /* xBGAS instructions */
 /* name, xlen, isa, operands, match, mask, match_func, pinfo.  */
 {"eld",       64, INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELD,  MASK_ELD,  match_opcode, 0 },
+{"elwu",      64, INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELWU, MASK_ELWU, match_opcode, 0 },
 {"elw",       0,  INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELW,  MASK_ELW,  match_opcode, 0 },
 {"elh",       0,  INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELH,  MASK_ELH,  match_opcode, 0 },
 {"elhu",      0,  INSN_CLASS_XBGAS, "d,o(s)",  MATCH_ELHU, MASK_ELHU, match_opcode, 0 },
@@ -3201,6 +3202,7 @@ const struct riscv_opcode riscv_opcodes[] =
 {"ese",       64, INSN_CLASS_XBGAS, "J,q(s)",  MATCH_ESE,  MASK_ESE,  match_opcode, 0 },
 
 {"erld",      64, INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLD, MASK_ERLD, match_opcode, 0 }, 
+{"erlwu",     64, INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLWU,MASK_ERLWU,match_opcode, 0 }, 
 {"erlw",      0,  INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLW, MASK_ERLW, match_opcode, 0 }, 
 {"erlh",      0,  INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLH, MASK_ERLH, match_opcode, 0 }, 
 {"erlhu",     0,  INSN_CLASS_XBGAS, "d,s,J",   MATCH_ERLHU,MASK_ERLHU,match_opcode, 0 }, 
@@ -3221,9 +3223,7 @@ const struct riscv_opcode riscv_opcodes[] =
 {"ebld",      64, INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLD,  MASK_EBLD,  match_opcode, 0 }, 
 {"eblw",      0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLW,  MASK_EBLW,  match_opcode, 0 }, 
 {"eblh",      0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLH,  MASK_EBLH,  match_opcode, 0 }, 
-{"eblhu",     0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLHU, MASK_EBLHU, match_opcode, 0 }, 
 {"eblb",      0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLB,  MASK_EBLB,  match_opcode, 0 }, 
-{"eblbu",     0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBLBU, MASK_EBLBU, match_opcode, 0 }, 
 
 {"ebsd",      64, INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBSD, MASK_EBSD, match_opcode, 0 }, 
 {"ebsw",      0,  INSN_CLASS_XBGAS, "d,s,t,g", MATCH_EBSW, MASK_EBSW, match_opcode, 0 }, 
